@@ -7,6 +7,7 @@ import { LeadsModule } from './leads/leads.module';
 import { OpportunitiesModule } from './opportunities/opportunities.module';
 import { ActivitiesModule } from './activities/activities.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { AgentModule } from './agent/agent.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
     OpportunitiesModule,
     ActivitiesModule,
     DashboardModule,
+    AgentModule,
   ],
 })
 export class AppModule {}
