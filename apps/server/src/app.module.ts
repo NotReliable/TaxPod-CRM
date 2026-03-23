@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { EventsModule } from './events/events.module';
 import { LeadsModule } from './leads/leads.module';
+import { OpportunitiesModule } from './opportunities/opportunities.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { LeadsModule } from './leads/leads.module';
     }),
     EventsModule,
     LeadsModule,
+    OpportunitiesModule,
   ],
 })
 export class AppModule {}
