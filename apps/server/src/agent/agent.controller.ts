@@ -25,24 +25,9 @@ export class AgentController {
     try {
       const { result, conversation } = await this.agentService.chat(message, conversationId);
 
-      res.setHeader('Content-Type', 'text/event-stream');
-      res.setHeader('Cache-Control', 'no-cache');
-      res.setHeader('Connection', 'keep-alive');
       res.setHeader('X-Conversation-Id', conversation.id);
 
-      const stream = result.toDataStream();
-      const reader = stream.getReader();
-      const decoder = new TextDecoder();
-
-      try {
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          res.write(decoder.decode(value));
-        }
-      } finally {
-        res.end();
-      }
+      result.pipeUIMessageStreamToResponse(res as any);
     } catch (error) {
       res.status(500).json({
         success: false,

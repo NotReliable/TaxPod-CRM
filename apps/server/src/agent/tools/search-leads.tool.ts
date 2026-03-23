@@ -5,7 +5,7 @@ import { LeadsService } from '../../leads/leads.service';
 export function createSearchLeadsTool(leadsService: LeadsService) {
   return tool({
     description: 'Search leads by name, email, company, or status. Returns matching leads with pagination.',
-    parameters: z.object({
+    inputSchema: z.object({
       query: z.string().optional().describe('Search text to match against name, email, or company'),
       status: z.enum(['Lead', 'Prospect', 'Customer']).optional().describe('Filter by lead status'),
     }),

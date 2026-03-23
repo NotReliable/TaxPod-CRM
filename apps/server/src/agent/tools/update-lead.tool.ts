@@ -4,7 +4,7 @@ import { z } from 'zod';
 export function createUpdateLeadTool() {
   return tool({
     description: 'Update an existing lead in the CRM. This requires user confirmation before execution.',
-    parameters: z.object({
+    inputSchema: z.object({
       id: z.string().uuid().describe('The UUID of the lead to update'),
       name: z.string().optional().describe('Full name of the lead'),
       email: z.string().email().optional().describe('Email address'),

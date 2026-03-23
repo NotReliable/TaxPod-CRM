@@ -4,7 +4,7 @@ import { z } from 'zod';
 export function createCreateOpportunityTool() {
   return tool({
     description: 'Create a new opportunity in the CRM. This requires user confirmation before execution.',
-    parameters: z.object({
+    inputSchema: z.object({
       title: z.string().describe('Title of the opportunity'),
       value: z.number().describe('Value of the opportunity in RM (Malaysian Ringgit)'),
       leadId: z.string().uuid().describe('The UUID of the lead this opportunity belongs to'),

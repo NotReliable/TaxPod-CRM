@@ -15,7 +15,7 @@ interface Props {
     toolName: string,
     args: Record<string, unknown>,
   ) => Promise<void>;
-  onReject: (toolCallId: string) => void;
+  onReject: (toolCallId: string, toolName: string) => void;
 }
 
 function formatToolName(name: string): string {
@@ -50,7 +50,7 @@ export function ConfirmationCard({
   };
 
   const handleReject = () => {
-    onReject(toolCallId);
+    onReject(toolCallId, toolName);
   };
 
   const resolved = status !== 'pending';

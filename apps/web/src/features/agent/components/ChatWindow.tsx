@@ -18,7 +18,16 @@ interface Props {
     toolName: string,
     args: Record<string, unknown>,
   ) => Promise<void>;
-  rejectToolCall: (toolCallId: string) => void;
+  rejectToolCall: (toolCallId: string, toolName: string) => void;
+}
+
+function isToolPart(part: { type: string }): boolean {
+  return part.type.startsWith('tool-') && part.type !== 'tool-result';
+}
+
+function extractToolName(partType: string): string {
+  // ToolUIPart type is `tool-${toolName}`, e.g. "tool-search_leads"
+  return partType.replace(/^tool-/, '');
 }
 
 export function ChatWindow({
@@ -74,38 +83,39 @@ export function ChatWindow({
                     key={`${message.id}-text-${index}`}
                     role={message.role as 'user' | 'assistant'}
                     content={part.text}
-                    createdAt={message.createdAt}
                   />
                 );
               }
 
-              // Tool invocation parts
-              if (part.type === 'tool-invocation') {
-                const invocation = part.toolInvocation;
-                const toolName = invocation.toolName;
-                const args = invocation.args as Record<string, unknown>;
+              // Tool invocation parts (type is `tool-${toolName}`)
+              if (isToolPart(part)) {
+                const toolPart = part as any;
+                const toolName = extractToolName(part.type);
+                const args = (toolPart.input ?? {}) as Record<string, unknown>;
                 const isWriteTool = WRITE_TOOLS.includes(toolName);
 
-                if (invocation.state === 'result') {
+                if (toolPart.state === 'output-available' || toolPart.state === 'output-error') {
+                  const resultText =
+                    toolPart.state === 'output-error'
+                      ? toolPart.errorText
+                      : typeof toolPart.output === 'string'
+                        ? toolPart.output
+                        : JSON.stringify(toolPart.output);
                   return (
                     <ToolCallCard
-                      key={invocation.toolCallId}
+                      key={toolPart.toolCallId}
                       toolName={toolName}
                       args={args}
-                      result={
-                        typeof invocation.result === 'string'
-                          ? invocation.result
-                          : JSON.stringify(invocation.result)
-                      }
+                      result={resultText}
                     />
                   );
                 }
 
-                if (invocation.state === 'call' && isWriteTool) {
+                if (toolPart.state === 'input-available' && isWriteTool) {
                   return (
                     <ConfirmationCard
-                      key={invocation.toolCallId}
-                      toolCallId={invocation.toolCallId}
+                      key={toolPart.toolCallId}
+                      toolCallId={toolPart.toolCallId}
                       toolName={toolName}
                       args={args}
                       onConfirm={executeToolAndAddResult}
@@ -114,11 +124,11 @@ export function ChatWindow({
                   );
                 }
 
-                // Read tool still in 'call' state (waiting for auto-execution result)
-                if (invocation.state === 'call') {
+                // Read tool still in 'input-available' state (waiting for auto-execution result)
+                if (toolPart.state === 'input-available') {
                   return (
                     <ToolCallCard
-                      key={invocation.toolCallId}
+                      key={toolPart.toolCallId}
                       toolName={toolName}
                       args={args}
                     />

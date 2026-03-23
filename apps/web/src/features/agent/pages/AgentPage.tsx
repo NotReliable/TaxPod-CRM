@@ -1,18 +1,27 @@
+import { useState } from 'react';
 import { PageHeader } from '@/shared/components/PageHeader';
 import { useAgentChat } from '../hooks/useAgentChat';
 import { ChatWindow } from '../components/ChatWindow';
 
 export function Component() {
+  const [input, setInput] = useState('');
   const {
     messages,
-    input,
-    isLoading,
-    handleInputChange,
-    handleSubmit,
-    setInput,
+    status,
+    sendMessage,
     executeToolAndAddResult,
     rejectToolCall,
   } = useAgentChat();
+
+  const isLoading = status === 'submitted' || status === 'streaming';
+
+  const handleSubmit = (e?: React.FormEvent) => {
+    e?.preventDefault?.();
+    const trimmed = input.trim();
+    if (!trimmed) return;
+    sendMessage({ text: trimmed });
+    setInput('');
+  };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 112px)' }}>

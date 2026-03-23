@@ -5,7 +5,7 @@ import { OpportunitiesService } from '../../opportunities/opportunities.service'
 export function createSearchOpportunitiesTool(opportunitiesService: OpportunitiesService) {
   return tool({
     description: 'Search opportunities by stage, value range. Returns matching opportunities with pagination.',
-    parameters: z.object({
+    inputSchema: z.object({
       stage: z.enum(['New', 'Contacted', 'Qualified', 'Proposal', 'Won', 'Lost']).optional().describe('Filter by opportunity stage'),
       minValue: z.number().optional().describe('Minimum opportunity value in RM'),
       maxValue: z.number().optional().describe('Maximum opportunity value in RM'),

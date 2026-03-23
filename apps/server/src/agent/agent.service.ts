@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { streamText } from 'ai';
+import { streamText, stepCountIs } from 'ai';
 import { AgentConversation } from './entities/agent-conversation.entity';
 import { AgentMessage, MessageRole } from './entities/agent-message.entity';
 import { getModel } from './providers/llm.provider';
@@ -33,7 +33,7 @@ export class AgentService {
     return this.messageRepo.find({ where: { conversationId }, order: { createdAt: 'ASC' } });
   }
 
-  async chat(message: string, conversationId?: string) {
+  async chat(message: string, conversationId?: string): Promise<{ result: any; conversation: AgentConversation }> {
     const conversation = await this.getOrCreateConversation(conversationId);
 
     // Save user message
@@ -50,7 +50,7 @@ export class AgentService {
           content: [
             ...(msg.content ? [{ type: 'text' as const, text: msg.content }] : []),
             ...msg.toolCalls.map((tc: any) => ({
-              type: 'tool-call' as const, toolCallId: tc.toolCallId, toolName: tc.toolName, args: tc.args,
+              type: 'tool-call' as const, toolCallId: tc.toolCallId, toolName: tc.toolName, input: tc.args ?? tc.input,
             })),
           ],
         };
@@ -59,7 +59,8 @@ export class AgentService {
         return {
           role: 'tool' as const,
           content: msg.toolResults.map((tr: any) => ({
-            type: 'tool-result' as const, toolCallId: tr.toolCallId, result: tr.result,
+            type: 'tool-result' as const, toolCallId: tr.toolCallId, toolName: tr.toolName ?? '',
+            output: tr.result ?? tr.output,
           })),
         };
       }
@@ -71,9 +72,9 @@ export class AgentService {
     const result = streamText({
       model: getModel(),
       system: getSystemPrompt(),
-      messages,
+      messages: messages as any,
       tools,
-      maxSteps: 10,
+      stopWhen: stepCountIs(10),
       onFinish: async ({ text, toolCalls, toolResults }) => {
         if (text) {
           await this.messageRepo.save(

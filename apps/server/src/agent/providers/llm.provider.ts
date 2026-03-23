@@ -1,9 +1,10 @@
 import { google } from '@ai-sdk/google';
 import { anthropic } from '@ai-sdk/anthropic';
+import type { LanguageModel } from 'ai';
 
 export type LLMProviderType = 'google' | 'anthropic';
 
-export function getModel(provider?: LLMProviderType) {
+export function getModel(provider?: LLMProviderType): LanguageModel {
   const selected = provider || (process.env.LLM_PROVIDER as LLMProviderType) || 'google';
 
   switch (selected) {
