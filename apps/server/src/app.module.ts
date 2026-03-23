@@ -6,6 +6,7 @@ import { EventsModule } from './events/events.module';
 import { LeadsModule } from './leads/leads.module';
 import { OpportunitiesModule } from './opportunities/opportunities.module';
 import { ActivitiesModule } from './activities/activities.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ActivitiesModule } from './activities/activities.module';
     LeadsModule,
     OpportunitiesModule,
     ActivitiesModule,
+    DashboardModule,
   ],
 })
 export class AppModule {}
