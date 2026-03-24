@@ -24,7 +24,7 @@ A CRM system with an agentic AI assistant built for YYC taxPOD. Manages leads, o
 
 ```bash
 # Clone and setup
-git clone <repo-url>
+git clone https://github.com/NotReliable/TaxPod-CRM.git
 cd taxpod-technical-interview
 cp .env.example .env
 # Add your GOOGLE_API_KEY to .env (get one at https://aistudio.google.com/)
