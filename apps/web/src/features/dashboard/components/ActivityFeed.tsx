@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Card, List, Typography, Tag } from 'antd';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
-
-dayjs.extend(relativeTime);
+import dayjs from '@/shared/utils/dayjs';
 
 interface FeedEvent {
   id: string;

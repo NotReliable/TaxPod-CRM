@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Modal, Form, Input, Select, DatePicker } from 'antd';
-import dayjs from 'dayjs';
+import dayjs from '@/shared/utils/dayjs';
 import type { ActivityType } from '@/shared/types/models';
 import { useLeads } from '@/features/leads/hooks/useLeads';
 import { useOpportunities } from '@/features/opportunities/hooks/useOpportunities';

@@ -2,7 +2,7 @@ import { useParams, useNavigate } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { Button, Descriptions, Spin, Tabs, Table, Timeline, Typography } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import dayjs from 'dayjs';
+import dayjs from '@/shared/utils/dayjs';
 import { api } from '@/shared/api/client';
 import { PageHeader } from '@/shared/components/PageHeader';
 import { EmptyState } from '@/shared/components/EmptyState';

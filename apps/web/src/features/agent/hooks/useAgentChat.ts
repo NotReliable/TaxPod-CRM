@@ -1,9 +1,22 @@
+import { useEffect } from 'react';
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport } from 'ai';
 import { api } from '@/shared/api/client';
 
+const STORAGE_KEY = 'taxpod-agent-chat';
+
+function loadMessages() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
 export function useAgentChat(conversationId?: string) {
   const chat = useChat({
+    messages: loadMessages(),
     transport: new DefaultChatTransport({
       api: '/api/agent/chat',
       body: { conversationId },
@@ -47,6 +60,18 @@ export function useAgentChat(conversationId?: string) {
     }
   };
 
+  // Persist messages to localStorage on every change
+  useEffect(() => {
+    if (chat.messages.length > 0) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(chat.messages));
+    }
+  }, [chat.messages]);
+
+  const clearChat = () => {
+    localStorage.removeItem(STORAGE_KEY);
+    chat.setMessages([]);
+  };
+
   const rejectToolCall = (toolCallId: string, toolName: string) => {
     chat.addToolOutput({
       toolCallId,
@@ -60,5 +85,6 @@ export function useAgentChat(conversationId?: string) {
     ...chat,
     executeToolAndAddResult,
     rejectToolCall,
+    clearChat,
   };
 }

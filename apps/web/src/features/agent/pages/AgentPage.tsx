@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { Button } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 import { PageHeader } from '@/shared/components/PageHeader';
 import { useAgentChat } from '../hooks/useAgentChat';
 import { ChatWindow } from '../components/ChatWindow';
@@ -11,6 +13,7 @@ export function Component() {
     sendMessage,
     executeToolAndAddResult,
     rejectToolCall,
+    clearChat,
   } = useAgentChat();
 
   const isLoading = status === 'submitted' || status === 'streaming';
@@ -25,7 +28,18 @@ export function Component() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 112px)' }}>
-      <PageHeader title="AI Agent" />
+      <PageHeader
+        title="AI Agent"
+        extra={
+          <Button
+            icon={<DeleteOutlined />}
+            onClick={clearChat}
+            disabled={messages.length === 0}
+          >
+            Clear Chat
+          </Button>
+        }
+      />
       <div
         style={{
           flex: 1,

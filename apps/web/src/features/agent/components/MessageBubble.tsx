@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import dayjs from '@/shared/utils/dayjs';
 import { Typography } from 'antd';
 
 interface Props {

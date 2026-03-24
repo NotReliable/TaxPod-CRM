@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Button, Popconfirm, Table } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Link } from 'react-router';
-import dayjs from 'dayjs';
+import dayjs from '@/shared/utils/dayjs';
 import type { Lead } from '@/shared/types/models';
 import { LeadStatusTag } from './LeadStatusTag';
 

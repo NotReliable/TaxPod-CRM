@@ -1,6 +1,7 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router';
 import { ProLayout } from '@ant-design/pro-components';
+import dayjs from '@/shared/utils/dayjs';
 import {
   DashboardOutlined,
   UserOutlined,
@@ -22,6 +23,13 @@ const menuRoutes = {
 export function AppLayout() {
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Re-set English locale after mount — @ant-design/pro-components' ProLayout
+  // creates an internal ConfigProvider that falls back to zh-cn and overrides
+  // dayjs locale via useEffect. This counters that override.
+  useEffect(() => {
+    dayjs.locale('en');
+  }, []);
 
   const loc = useMemo(() => ({ pathname: location.pathname }), [location.pathname]);
 

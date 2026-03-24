@@ -5,7 +5,7 @@ import {
   TeamOutlined,
   FileTextOutlined,
 } from '@ant-design/icons';
-import dayjs from 'dayjs';
+import dayjs from '@/shared/utils/dayjs';
 import type { ActivityLog, ActivityType } from '@/shared/types/models';
 
 const typeIcons: Record<ActivityType, React.ReactNode> = {
