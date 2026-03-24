@@ -28,7 +28,7 @@ export function OpportunityChart() {
 
   const chartData = STAGES.flatMap((stage) => {
     const opportunities = grouped?.[stage] ?? [];
-    const totalValue = opportunities.reduce((sum, o) => sum + o.value, 0);
+    const totalValue = opportunities.reduce((sum, o) => sum + Number(o.value), 0);
     return [
       { stage, metric: 'Count', value: opportunities.length },
       { stage, metric: 'Value (RM k)', value: Math.round(totalValue / 1000) },
@@ -46,8 +46,7 @@ export function OpportunityChart() {
       items: [
         {
           channel: 'y',
-          valueFormatter: (value: number, datum: Record<string, unknown>) =>
-            datum.metric === 'Value (RM k)' ? rmFormatter.format((value as number) * 1000) : `${value}`,
+          valueFormatter: (value: number) => `${value}`,
         },
       ],
     },

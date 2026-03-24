@@ -24,7 +24,7 @@ export function Component() {
     limit: 10,
   });
 
-  const { data: leadsData } = useLeads({ limit: 200 });
+  const { data: leadsData } = useLeads({ limit: 100 });
   const createActivity = useCreateActivity();
 
   const handleOpen = useCallback(() => setModalOpen(true), []);

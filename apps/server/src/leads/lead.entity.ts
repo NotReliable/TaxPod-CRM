@@ -16,10 +16,10 @@ export class Lead {
   @Column({ length: 255 })
   email: string;
 
-  @Column({ length: 50, nullable: true })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   phone: string | null;
 
-  @Column({ length: 255, nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   company: string | null;
 
   @Column({ type: 'enum', enum: LeadStatus, default: LeadStatus.LEAD })

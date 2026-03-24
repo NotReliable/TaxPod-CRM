@@ -8,7 +8,7 @@ export function useOpportunities() {
     queryKey: ['opportunities'],
     queryFn: () =>
       api.get<never, PaginatedResponse<Opportunity>>('/opportunities', {
-        params: { limit: 500 },
+        params: { limit: 100 },
       }),
     select: (response) => {
       const opportunities = response.data;

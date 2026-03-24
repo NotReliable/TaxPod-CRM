@@ -32,7 +32,7 @@ const ACTIVITY_TYPES: ActivityType[] = ['Call', 'Email', 'Meeting', 'Note'];
 
 export function ActivityForm({ open, onClose, onSubmit, loading }: Props) {
   const [form] = Form.useForm<ActivityFormValues>();
-  const { data: leadsData, isLoading: leadsLoading } = useLeads({ limit: 200 });
+  const { data: leadsData, isLoading: leadsLoading } = useLeads({ limit: 100 });
   const { data: opportunitiesData, isLoading: opportunitiesLoading } = useOpportunities();
 
   useEffect(() => {
@@ -66,7 +66,7 @@ export function ActivityForm({ open, onClose, onSubmit, loading }: Props) {
       onOk={handleOk}
       onCancel={onClose}
       confirmLoading={loading}
-      destroyOnClose
+      destroyOnHidden
     >
       <Form form={form} layout="vertical" initialValues={{ date: dayjs() }}>
         <Form.Item

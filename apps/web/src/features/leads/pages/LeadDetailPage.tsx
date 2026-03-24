@@ -34,7 +34,7 @@ export function Component() {
     );
   }
 
-  const lead = data?.data;
+  const lead = data as Lead | undefined;
 
   if (!lead) {
     return <EmptyState description="Lead not found" />;

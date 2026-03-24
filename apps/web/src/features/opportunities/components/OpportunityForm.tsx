@@ -21,7 +21,7 @@ const STAGES: OpportunityStage[] = ['New', 'Contacted', 'Qualified', 'Proposal',
 
 export function OpportunityForm({ open, onClose, onSubmit, loading }: Props) {
   const [form] = Form.useForm<OpportunityFormValues>();
-  const { data: leadsData, isLoading: leadsLoading } = useLeads({ limit: 200 });
+  const { data: leadsData, isLoading: leadsLoading } = useLeads({ limit: 100 });
 
   useEffect(() => {
     if (open) {
@@ -46,7 +46,7 @@ export function OpportunityForm({ open, onClose, onSubmit, loading }: Props) {
       onOk={handleOk}
       onCancel={onClose}
       confirmLoading={loading}
-      destroyOnClose
+      destroyOnHidden
     >
       <Form form={form} layout="vertical" initialValues={{ stage: 'New' }}>
         <Form.Item

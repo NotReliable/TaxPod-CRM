@@ -1,5 +1,6 @@
 import { Button, Popconfirm, Table } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Link } from 'react-router';
 import dayjs from 'dayjs';
 import type { Lead } from '@/shared/types/models';
 import { LeadStatusTag } from './LeadStatusTag';
@@ -39,6 +40,9 @@ export function LeadTable({ leads, loading, pagination, onPageChange, onEdit, on
           title: 'Name',
           dataIndex: 'name',
           key: 'name',
+          render: (name: string, record: Lead) => (
+            <Link to={`/leads/${record.id}`}>{name}</Link>
+          ),
         },
         {
           title: 'Email',

@@ -49,7 +49,7 @@ export function LeadForm({ open, onClose, onSubmit, initialValues, loading }: Pr
       onOk={handleOk}
       onCancel={onClose}
       confirmLoading={loading}
-      destroyOnClose
+      destroyOnHidden
     >
       <Form form={form} layout="vertical" initialValues={{ status: 'Lead' }}>
         <Form.Item

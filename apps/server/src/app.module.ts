@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { resolve } from 'path';
 import { EventsModule } from './events/events.module';
 import { LeadsModule } from './leads/leads.module';
 import { OpportunitiesModule } from './opportunities/opportunities.module';
@@ -11,15 +12,16 @@ import { AgentModule } from './agent/agent.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: resolve(__dirname, '../../../.env') }),
     EventEmitterModule.forRoot(),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      url: process.env.DATABASE_URL,
-      autoLoadEntities: true,
-      migrationsRun: true,
-      migrations: [__dirname + '/database/migrations/*{.ts,.js}'],
-      synchronize: false,
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        type: 'postgres' as const,
+        url: config.get<string>('DATABASE_URL'),
+        autoLoadEntities: true,
+        synchronize: false,
+      }),
     }),
     EventsModule,
     LeadsModule,

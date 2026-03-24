@@ -1,4 +1,6 @@
-import 'dotenv/config';
+import { config } from 'dotenv';
+import { resolve } from 'path';
+config({ path: resolve(__dirname, '../../../../.env') });
 import { DataSource } from 'typeorm';
 import { Lead } from '../leads/lead.entity';
 import { Opportunity } from '../opportunities/opportunity.entity';
@@ -6,12 +8,15 @@ import { ActivityLog } from '../activities/activity-log.entity';
 import { LeadStatus } from '../leads/lead-status.enum';
 import { OpportunityStage } from '../opportunities/opportunity-stage.enum';
 import { ActivityType } from '../activities/activity-type.enum';
+import { EventLog } from '../events/event-log.entity';
+import { AgentConversation } from '../agent/entities/agent-conversation.entity';
+import { AgentMessage } from '../agent/entities/agent-message.entity';
 
 const dataSource = new DataSource({
   type: 'postgres',
   url: process.env.DATABASE_URL,
-  entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-  synchronize: false,
+  entities: [Lead, Opportunity, ActivityLog, EventLog, AgentConversation, AgentMessage],
+  synchronize: true,
 });
 
 async function seed() {

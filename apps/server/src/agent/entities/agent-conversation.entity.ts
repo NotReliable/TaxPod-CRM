@@ -6,7 +6,7 @@ export class AgentConversation {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ length: 255, nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   title: string | null;
 
   @CreateDateColumn()

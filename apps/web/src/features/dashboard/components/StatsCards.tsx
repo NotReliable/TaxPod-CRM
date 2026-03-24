@@ -24,7 +24,7 @@ export function StatsCards() {
     );
   }
 
-  const stats = data?.data;
+  const stats = data as any;
 
   return (
     <Row gutter={[16, 16]}>

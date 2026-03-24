@@ -17,7 +17,7 @@ interface Props {
 export function KanbanColumn({ stage, opportunities }: Props) {
   const { setNodeRef, isOver } = useDroppable({ id: stage });
 
-  const totalValue = opportunities.reduce((sum, o) => sum + o.value, 0);
+  const totalValue = opportunities.reduce((sum, o) => sum + Number(o.value), 0);
 
   return (
     <div

@@ -19,7 +19,8 @@ function formatEventType(eventType: string): string {
     .join(' ');
 }
 
-function getEventColor(eventType: string): string {
+function getEventColor(eventType?: string): string {
+  if (!eventType) return 'default';
   if (eventType.includes('created')) return 'green';
   if (eventType.includes('updated')) return 'blue';
   if (eventType.includes('deleted')) return 'red';
@@ -44,8 +45,12 @@ export function ActivityFeed() {
 
     es.onmessage = (event) => {
       try {
-        const data = JSON.parse(event.data) as FeedEvent;
-        setEvents((prev) => [data, ...prev].slice(0, 50));
+        const data = JSON.parse(event.data);
+        if (Array.isArray(data)) {
+          setEvents(data as FeedEvent[]);
+        } else {
+          setEvents((prev) => [data as FeedEvent, ...prev].slice(0, 50));
+        }
       } catch {
         // Ignore malformed events
       }

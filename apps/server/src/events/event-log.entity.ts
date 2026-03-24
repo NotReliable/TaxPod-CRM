@@ -20,7 +20,7 @@ export class EventLog {
   @Column({ type: 'enum', enum: EventSource })
   source: EventSource;
 
-  @Column({ length: 50, nullable: true })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   entityType: string | null;
 
   @Column({ type: 'uuid', nullable: true })
