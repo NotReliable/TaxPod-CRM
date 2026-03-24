@@ -1,5 +1,5 @@
-import { Controller, Post, Get, Body, Param, Res, ParseUUIDPipe } from '@nestjs/common';
-import { Response } from 'express';
+import { Controller, Post, Get, Body, Param, Res, ParseUUIDPipe, Req } from '@nestjs/common';
+import { Response, Request } from 'express';
 import { AgentService } from './agent.service';
 import { LeadsService } from '../leads/leads.service';
 import { OpportunitiesService } from '../opportunities/opportunities.service';
@@ -16,19 +16,29 @@ export class AgentController {
   ) {}
 
   @Post('chat')
-  async chat(@Body() body: Record<string, any>, @Res() res: Response) {
+  async chat(@Req() req: Request, @Res() res: Response) {
+    // Bypass NestJS ValidationPipe by reading raw body from request
+    const body = req.body;
     const messages = body.messages || [];
-    const lastUserMsg = messages.filter((m: any) => m.role === 'user').pop();
-    const message = lastUserMsg?.content || body.message || '';
-    const conversationId = body.conversationId;
+
+    // AI SDK v6 UIMessage uses 'parts' array, not 'content' string
+    const lastUserMsg = [...messages].reverse().find((m: any) => m.role === 'user');
+    let messageText = '';
+    if (lastUserMsg) {
+      if (lastUserMsg.parts) {
+        const textPart = lastUserMsg.parts.find((p: any) => p.type === 'text');
+        messageText = textPart?.text || '';
+      } else if (typeof lastUserMsg.content === 'string') {
+        messageText = lastUserMsg.content;
+      }
+    }
 
     try {
-      const { result, conversation } = await this.agentService.chat(message, conversationId);
-
-      res.setHeader('X-Conversation-Id', conversation.id);
+      const { result } = await this.agentService.chat(messageText, messages);
 
       result.pipeUIMessageStreamToResponse(res as any);
     } catch (error) {
+      console.error('Agent chat error:', error);
       res.status(500).json({
         success: false,
         error: { code: 'AGENT_ERROR', message: 'Failed to process your request. Please try again.' },

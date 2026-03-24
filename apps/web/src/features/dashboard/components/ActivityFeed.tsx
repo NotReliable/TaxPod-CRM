@@ -12,7 +12,8 @@ interface FeedEvent {
   createdAt: string;
 }
 
-function formatEventType(eventType: string): string {
+function formatEventType(eventType?: string): string {
+  if (!eventType) return 'Event';
   return eventType
     .split('.')
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -47,8 +48,8 @@ export function ActivityFeed() {
       try {
         const data = JSON.parse(event.data);
         if (Array.isArray(data)) {
-          setEvents(data as FeedEvent[]);
-        } else {
+          setEvents(data.filter((e: any) => e && e.eventType) as FeedEvent[]);
+        } else if (data && data.eventType) {
           setEvents((prev) => [data as FeedEvent, ...prev].slice(0, 50));
         }
       } catch {
