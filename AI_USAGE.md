@@ -4,7 +4,7 @@ This document describes how AI tools were used during the development of TaxPod 
 
 ## AI Tools Used
 
-**Claude Code** (Anthropic's CLI) was the primary AI tool used throughout this project:
+**Claude Code** was the primary AI tool used throughout this project:
 
 - **Architecture design and brainstorming** — Explored architectural patterns, evaluated trade-offs, and converged on a modular monolith with an event-driven agent pattern.
 - **Implementation plan generation** — Produced a comprehensive, ordered task list covering backend entities, services, controllers, frontend features, and AI integration.
