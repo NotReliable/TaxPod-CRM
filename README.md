@@ -1,5 +1,7 @@
 # TaxPod CRM
 
+**Prepared by: Jack Siow Woon Yew**
+
 A CRM system with an agentic AI assistant built for YYC taxPOD. Manages leads, opportunities, and activities with an AI agent that can query data, create records, and process meeting notes through natural language conversation.
 
 ## Tech Stack

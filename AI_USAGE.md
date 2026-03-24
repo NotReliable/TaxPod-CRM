@@ -1,5 +1,7 @@
 # AI Usage
 
+**Prepared by: Jack Siow Woon Yew**
+
 This document describes how AI tools were used during the development of TaxPod CRM.
 
 ## AI Tools Used

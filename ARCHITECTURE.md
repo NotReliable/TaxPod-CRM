@@ -1,5 +1,7 @@
 # Architecture
 
+**Prepared by: Jack Siow Woon Yew**
+
 ## System Design
 
 TaxPod CRM follows a **modular monolith** architecture with an **event-driven agent pattern**. The backend is organized into cohesive NestJS modules that communicate through an internal EventBus (EventEmitter), while the AI agent integrates via the Vercel AI SDK's streaming protocol. This approach provides the clear boundaries of microservices without the operational overhead, making it ideal for a focused CRM application.
