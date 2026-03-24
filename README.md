@@ -55,6 +55,24 @@ Navigate to the AI Agent page (`/agent`) to interact with the CRM through natura
 - "What is the total value of opportunities in the Won stage?"
 - "Update the status of John Smith to Customer"
 
+### LLM Provider
+
+The AI agent supports multiple LLM providers. Set `LLM_PROVIDER` in your `.env` file:
+
+| Provider | Value | Model | API Key Variable |
+|----------|-------|-------|-----------------|
+| Google Gemini | `google` | gemini-2.0-flash | `GOOGLE_API_KEY` |
+| OpenAI | `openai` | gpt-4o-mini | `OPENAI_API_KEY` |
+| Anthropic | `anthropic` | claude-sonnet-4 | `ANTHROPIC_API_KEY` |
+
+```bash
+# Example: switch to OpenAI
+LLM_PROVIDER=openai
+OPENAI_API_KEY=your_key_here
+```
+
+Restart the server after changing the provider.
+
 ### How It Works
 
 - **Read operations** (searching leads, viewing details) execute automatically and display results inline.
