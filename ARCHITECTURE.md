@@ -278,3 +278,5 @@ Both providers are accessed through the Vercel AI SDK's unified interface (`@ai-
 7. **Rate limiting and API security** — Add request rate limiting, input sanitization beyond class-validator, CORS configuration for production, and API key management for the LLM providers.
 
 8. **Proper logging with structured logs** — Replace console logging with a structured logger (e.g., Winston or Pino) with log levels, request IDs, and centralized log aggregation.
+
+9. **AI agent monitoring and evals** — Add observability and evaluation for the agentic AI system: trace every LLM call with latency, token usage, and cost tracking (e.g., Langfuse or Braintrust); build an evaluation suite with golden test cases to measure tool-calling accuracy, response relevance, and hallucination rate; set up guardrails to detect and flag when the agent produces incorrect tool arguments or hallucinates lead/opportunity data; monitor prompt drift over time as the system prompt evolves; and implement A/B testing infrastructure to compare model providers (Gemini vs Claude vs GPT) on quality, speed, and cost for the CRM use case.

@@ -5,11 +5,6 @@ import type { OpportunityStage } from '@/shared/types/models';
 
 const STAGES: OpportunityStage[] = ['New', 'Contacted', 'Qualified', 'Proposal', 'Won', 'Lost'];
 
-const rmFormatter = new Intl.NumberFormat('en-MY', {
-  style: 'currency',
-  currency: 'MYR',
-  minimumFractionDigits: 0,
-});
 
 export function OpportunityChart() {
   const { data, isLoading } = useOpportunities();

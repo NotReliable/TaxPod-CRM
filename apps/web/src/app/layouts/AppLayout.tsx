@@ -1,3 +1,4 @@
+import { useCallback, useMemo } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router';
 import { ProLayout } from '@ant-design/pro-components';
 import {
@@ -22,20 +23,30 @@ export function AppLayout() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const loc = useMemo(() => ({ pathname: location.pathname }), [location.pathname]);
+
+  const menuItemRender = useCallback(
+    (item: any, dom: React.ReactNode) => (
+      <div onClick={() => item.path && navigate(item.path)}>{dom}</div>
+    ),
+    [navigate],
+  );
+
   return (
     <ProLayout
       title="TaxPod CRM"
       logo={null}
       route={menuRoutes}
-      location={{ pathname: location.pathname }}
-      menuItemRender={(item, dom) => (
-        <div onClick={() => item.path && navigate(item.path)}>{dom}</div>
-      )}
+      location={loc}
+      menuItemRender={menuItemRender}
       layout="mix"
       fixSiderbar
       contentStyle={{ padding: 24 }}
     >
-      <Outlet />
+      <div style={{ animation: 'fadeIn 0.15s ease-in' }}>
+        <Outlet />
+      </div>
+      <style>{`@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }`}</style>
     </ProLayout>
   );
 }

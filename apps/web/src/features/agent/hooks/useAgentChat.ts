@@ -4,14 +4,23 @@ import { api } from '@/shared/api/client';
 
 export function useAgentChat(conversationId?: string) {
   const chat = useChat({
-    // DefaultChatTransport from ai@6 is structurally compatible with
-    // the ChatTransport expected by @ai-sdk/react, but pnpm resolves
-    // them to different package instances, so we cast to avoid the
-    // nominal type mismatch.
     transport: new DefaultChatTransport({
       api: '/api/agent/chat',
       body: { conversationId },
     }) as any,
+    // After a tool output is added (confirm/reject), automatically send
+    // a follow-up request so the LLM can see the result and respond.
+    // Only trigger if the LAST part is a tool with output — once the LLM
+    // responds with text, the last part becomes text and this returns false.
+    sendAutomaticallyWhen: ({ messages }: { messages: any[] }) => {
+      const lastMsg = messages[messages.length - 1];
+      if (lastMsg?.role !== 'assistant' || !lastMsg.parts?.length) return false;
+      const lastPart = lastMsg.parts[lastMsg.parts.length - 1];
+      return (
+        lastPart.type?.startsWith('tool-') &&
+        (lastPart.state === 'output-available' || lastPart.state === 'output-error')
+      );
+    },
   });
 
   const executeToolAndAddResult = async (

@@ -11,8 +11,9 @@ interface UseLeadsParams {
 }
 
 export function useLeads(params: UseLeadsParams = {}) {
+  const { query, status, page = 1, limit = 20 } = params;
   return useQuery({
-    queryKey: ['leads', params],
+    queryKey: ['leads', query, status, page, limit],
     queryFn: () =>
       api.get<never, PaginatedResponse<Lead>>('/leads', { params }),
   });

@@ -16,6 +16,9 @@ importers:
       '@ai-sdk/google':
         specifier: ^3.0.0
         version: 3.0.53(zod@4.3.6)
+      '@ai-sdk/openai':
+        specifier: ^3.0.48
+        version: 3.0.48(zod@4.3.6)
       '@nestjs/common':
         specifier: ^11.0.0
         version: 11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -188,6 +191,12 @@ packages:
 
   '@ai-sdk/google@3.0.53':
     resolution: {integrity: sha512-uz8tIlkDgQJG9Js2Wh9JHzd4kI9+hYJqf9XXJLx60vyN5mRIqhr49iwR5zGP5Gl8odp2PeR3Gh2k+5bh3Z1HHw==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      zod: ^3.25.76 || ^4.1.8
+
+  '@ai-sdk/openai@3.0.48':
+    resolution: {integrity: sha512-ALmj/53EXpcRqMbGpPJPP4UOSWw0q4VGpnDo7YctvsynjkrKDmoneDG/1a7VQnSPYHnJp6tTRMf5ZdxZ5whulg==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -4235,6 +4244,12 @@ snapshots:
       zod: 4.3.6
 
   '@ai-sdk/google@3.0.53(zod@4.3.6)':
+    dependencies:
+      '@ai-sdk/provider': 3.0.8
+      '@ai-sdk/provider-utils': 4.0.21(zod@4.3.6)
+      zod: 4.3.6
+
+  '@ai-sdk/openai@3.0.48(zod@4.3.6)':
     dependencies:
       '@ai-sdk/provider': 3.0.8
       '@ai-sdk/provider-utils': 4.0.21(zod@4.3.6)

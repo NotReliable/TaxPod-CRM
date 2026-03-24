@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Button, Input, Select, Space, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { PageHeader } from '@/shared/components/PageHeader';
@@ -13,13 +13,24 @@ import type { Lead, LeadStatus } from '@/shared/types/models';
 
 export function Component() {
   const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<LeadStatus | undefined>();
   const [page, setPage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingLead, setEditingLead] = useState<Lead | undefined>();
 
+  const debounceTimer = useMemo(() => ({ id: 0 as any }), []);
+  const handleSearch = useCallback((value: string) => {
+    setSearch(value);
+    clearTimeout(debounceTimer.id);
+    debounceTimer.id = setTimeout(() => {
+      setDebouncedSearch(value);
+      setPage(1);
+    }, 300);
+  }, [debounceTimer]);
+
   const { data, isLoading } = useLeads({
-    query: search || undefined,
+    query: debouncedSearch || undefined,
     status: statusFilter,
     page,
     limit: 10,
@@ -88,8 +99,10 @@ export function Component() {
         <Input.Search
           placeholder="Search leads..."
           allowClear
+          value={search}
+          onChange={(e) => handleSearch(e.target.value)}
           onSearch={(value) => {
-            setSearch(value);
+            setDebouncedSearch(value);
             setPage(1);
           }}
           style={{ width: 280 }}

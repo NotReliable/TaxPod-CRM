@@ -12,8 +12,9 @@ interface UseActivitiesParams {
 }
 
 export function useActivities(params: UseActivitiesParams = {}) {
+  const { type, leadId, opportunityId, page = 1, limit = 20 } = params;
   return useQuery({
-    queryKey: ['activities', params],
+    queryKey: ['activities', type, leadId, opportunityId, page, limit],
     queryFn: () =>
       api.get<never, PaginatedResponse<ActivityLog>>('/activities', { params }),
   });

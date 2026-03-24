@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { Button, Popconfirm, Table } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Link } from 'react-router';
@@ -19,6 +20,69 @@ interface Props {
 }
 
 export function LeadTable({ leads, loading, pagination, onPageChange, onEdit, onDelete }: Props) {
+  const columns = useMemo(() => [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+      render: (name: string, record: Lead) => (
+        <Link to={`/leads/${record.id}`}>{name}</Link>
+      ),
+    },
+    {
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
+    },
+    {
+      title: 'Phone',
+      dataIndex: 'phone',
+      key: 'phone',
+      render: (value: string | null) => value || '-',
+    },
+    {
+      title: 'Company',
+      dataIndex: 'company',
+      key: 'company',
+      render: (value: string | null) => value || '-',
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: (status: Lead['status']) => <LeadStatusTag status={status} />,
+    },
+    {
+      title: 'Created At',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: (value: string) => dayjs(value).format('DD MMM YYYY'),
+    },
+    {
+      title: 'Actions',
+      key: 'actions',
+      render: (_: unknown, record: Lead) => (
+        <div style={{ display: 'flex', gap: 8 }}>
+          <Button
+            type="link"
+            icon={<EditOutlined />}
+            size="small"
+            onClick={() => onEdit?.(record)}
+          />
+          <Popconfirm
+            title="Delete this lead?"
+            description="This action cannot be undone."
+            onConfirm={() => onDelete?.(record.id)}
+            okText="Delete"
+            okType="danger"
+          >
+            <Button type="link" danger icon={<DeleteOutlined />} size="small" />
+          </Popconfirm>
+        </div>
+      ),
+    },
+  ], [onEdit, onDelete]);
+
   return (
     <Table
       dataSource={leads}
@@ -35,68 +99,7 @@ export function LeadTable({ leads, loading, pagination, onPageChange, onEdit, on
             }
           : false
       }
-      columns={[
-        {
-          title: 'Name',
-          dataIndex: 'name',
-          key: 'name',
-          render: (name: string, record: Lead) => (
-            <Link to={`/leads/${record.id}`}>{name}</Link>
-          ),
-        },
-        {
-          title: 'Email',
-          dataIndex: 'email',
-          key: 'email',
-        },
-        {
-          title: 'Phone',
-          dataIndex: 'phone',
-          key: 'phone',
-          render: (value: string | null) => value || '-',
-        },
-        {
-          title: 'Company',
-          dataIndex: 'company',
-          key: 'company',
-          render: (value: string | null) => value || '-',
-        },
-        {
-          title: 'Status',
-          dataIndex: 'status',
-          key: 'status',
-          render: (status: Lead['status']) => <LeadStatusTag status={status} />,
-        },
-        {
-          title: 'Created At',
-          dataIndex: 'createdAt',
-          key: 'createdAt',
-          render: (value: string) => dayjs(value).format('DD MMM YYYY'),
-        },
-        {
-          title: 'Actions',
-          key: 'actions',
-          render: (_: unknown, record: Lead) => (
-            <div style={{ display: 'flex', gap: 8 }}>
-              <Button
-                type="link"
-                icon={<EditOutlined />}
-                size="small"
-                onClick={() => onEdit?.(record)}
-              />
-              <Popconfirm
-                title="Delete this lead?"
-                description="This action cannot be undone."
-                onConfirm={() => onDelete?.(record.id)}
-                okText="Delete"
-                okType="danger"
-              >
-                <Button type="link" danger icon={<DeleteOutlined />} size="small" />
-              </Popconfirm>
-            </div>
-          ),
-        },
-      ]}
+      columns={columns}
     />
   );
 }
